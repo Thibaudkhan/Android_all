@@ -3,6 +3,7 @@ package com.convert.thibaud.music;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ImageQuizz extends AppCompatActivity {
     private RadioGroup radio_group;
     private RadioButton radioButton;
+    private MediaPlayer mediaPlayer;
     String[][] myArray = {{"Qui est sur la photo","Matthew Bellamy","Christopher Wolstenholme","Dominic Howard","Christopher Howard"},{"Qui est sur la photo","Matthew Bellamy","Dominic Howard","Christopher Wolstenholme","Christopher Howard"},{"Qui est sur la photo","Christopher Wolstenholme","Matthew Bellamy","Dominic Howard","Christopher Howard"}};
     int[] arrayInt = {R.drawable.chris,R.drawable.dominic,R.drawable.matt};
 
@@ -30,6 +32,8 @@ public class ImageQuizz extends AppCompatActivity {
         setContentView(R.layout.activity_image_quizz);
         Random rand = new Random();
         final int random = rand.nextInt(myArray.length);
+        mediaPlayer = MediaPlayer.create(this,R.raw.showbiz);
+        mediaPlayer.start();
         //String temp[][] = myArray;
         //Arrays.sort(temp);
         initQuizz(random);
