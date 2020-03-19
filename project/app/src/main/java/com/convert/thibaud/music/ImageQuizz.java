@@ -31,16 +31,19 @@ public class ImageQuizz extends AppCompatActivity {
     private RadioGroup radio_group;
     private RadioButton radioButton;
     private MediaPlayer mediaPlayer;
+    private Quizz quizz;
     int random = 0;
     int nbQuestion = 0;
     int goodAnswear = 0;
     int difficulties = 0;
     private boolean firstTime = true;
     List<List<String>> myList = new ArrayList<List<String>>();
+    List<String> allMyQuestions = new ArrayList<String>();
+
     String[][] myArray;
-    String[][] myArrayNoob = {{"Qui est sur la photo","Matthew Bellamy","Christopher Wolstenholme","Dominic Howard","Christopher Howard"},{"Qui est sur la photo","Matthew Bellamy","Dominic Howard","Christopher Wolstenholme","Christopher Howard"},{"Qui est sur la photo","Christopher Wolstenholme","Matthew Bellamy","Dominic Howard","Christopher Howard"}};
-    String[][] myArrayEz = {{"Qui est sur la photo","Matthew Bellamy","Christopher Wolstenholme","Dominic Howard","Christopher Howard"},{"Qui est sur la photo","Matthew Bellamy","Dominic Howard","Christopher Wolstenholme","Christopher Howard"},{"Qui est sur la photo","Christopher Wolstenholme","Matthew Bellamy","Dominic Howard","Christopher Howard"}};
-    String[][] myArrayFan = {{"Qui est sur la photo","Christopher Wolstenholmes","Christopher Wolstenholme","Christophers Wolstenholme","Christopher Wolstehnolme"},{"Qui est sur la photo","Dominique Howard","Dominic Howard","Dominic Clurk","Dominic Clark"},{"Qui est sur la photo","Matt Bellamy","Matthew Bellamy","Mathew Bellamy","Matthew Bellamie"}};
+    String[][] myArrayNoob;
+    String[][] myArrayEz;
+    String[][] myArrayFan;
     int[] arrayInt = {R.drawable.chris,R.drawable.dominic,R.drawable.matt};
     int nbTotQuestion = arrayInt.length;
     int difficulty = 0;
@@ -51,10 +54,17 @@ public class ImageQuizz extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_quizz);
         TextView nbQuestionTextView = findViewById(R.id.nbQuestionTextView);
+        quizz = new Quizz();
+        myArrayNoob = quizz.myArrayNoob;
+        myArrayEz = quizz.myArrayEz;
+        myArrayFan = quizz.myArrayFan;
         nbQuestionTextView.setText(nbQuestion + " / "+ nbTotQuestion);
         Intent srcIntent = getIntent();
         int diff = srcIntent.getIntExtra("difficulty",0);
         difficulty = diff;
+        getAllQuestion(myArrayNoob);
+        getAllQuestion(myArrayEz);
+        getAllQuestion(myArrayFan);
         choseDiff(diff);
         reset();
         //String temp[][] = myArray;
@@ -122,6 +132,12 @@ public class ImageQuizz extends AppCompatActivity {
     }
 
 
+    private void getAllQuestion(String[][] array){
+        for(int i =0 ; i < array.length; i++){
+            allMyQuestions.add(array[i][0]);
+        }
+
+    }
 
     private void reset(){
 

@@ -17,6 +17,7 @@ public class SelectedMenu extends AppCompatActivity {
         Button songButton = findViewById(R.id.songButton);
         Button imageButton = findViewById(R.id.imageButton);
         Button meButton = findViewById(R.id.meButton);
+        Button questionButton = findViewById(R.id.questionButton);
 
 
         songButton.setOnClickListener(new View.OnClickListener() {
@@ -43,6 +44,13 @@ public class SelectedMenu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SelectedMenu.this, Me.class);
+                startActivity(intent);
+            }
+        });
+        questionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SelectedMenu.this, ShowMyQuestions.class);
                 startActivity(intent);
             }
         });

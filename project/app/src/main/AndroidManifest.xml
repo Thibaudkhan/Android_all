@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DifficultyQuizz"></activity>
+        <activity android:name=".ShowMyQuestions"></activity>
+        <activity android:name=".DifficultyQuizz" />
         <activity android:name=".Score" />
         <activity android:name=".MusiqueQuizz" />
         <activity android:name=".ImageQuizz" />

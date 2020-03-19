@@ -18,6 +18,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class MusiqueQuizz extends AppCompatActivity {
@@ -30,38 +31,47 @@ public class MusiqueQuizz extends AppCompatActivity {
     int difficulties = 0;
     private boolean firstTime = true;
     String[][] myArray;
-    String[][] myArrayNoob = {{"Qui est sur la photo","Matthew Bellamy","Christopher Wolstenholme","Dominic Howard","Christopher Howard"},{"Qui est sur la photo","Matthew Bellamy","Dominic Howard","Christopher Wolstenholme","Christopher Howard"},{"Qui est sur la photo","Christopher Wolstenholme","Matthew Bellamy","Dominic Howard","Christopher Howard"}};
-    String[][] myArrayEz = {{"Qui est sur la photo","Matthew Bellamy","Christopher Wolstenholme","Dominic Howard","Christopher Howard"},{"Qui est sur la photo","Matthew Bellamy","Dominic Howard","Christopher Wolstenholme","Christopher Howard"},{"Qui est sur la photo","Christopher Wolstenholme","Matthew Bellamy","Dominic Howard","Christopher Howard"}};
-    String[][] myArrayFan = {{"Qui est sur la photo","Christopher Wolstenholmes","Christopher Wolstenholme","Christophers Wolstenholme","Christopher Wolstehnolme"},{"Qui est sur la photo","Dominique Howard","Dominic Howard","Dominic Clurk","Dominic Clark"},{"Qui est sur la photo","Matt Bellamy","Matthew Bellamy","Mathew Bellamy","Matthew Bellamie"}};
-
+    String[][] myArrayNoob;
+    String[][] myArrayEz;
+    String[][] myArrayFan;
+    List<String> allMyQuestions = new ArrayList<String>();
     int[] arrayInt = {R.raw.showbiz,R.raw.algorithm,R.raw.plug};
     int nbTotQuestion = arrayInt.length;
     int difficulty = 0;
-
+    Quizz quizz;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_musique_quizz);
         TextView nbQuestionTextView = findViewById(R.id.nbQuestionTextView);
+        quizz = new Quizz();
+        myArrayNoob = quizz.myArrayNoob2;
+        myArrayEz = quizz.myArrayEz2;
+        myArrayFan = quizz.myArrayFan2;
         nbQuestionTextView.setText(nbQuestion + " / "+ nbTotQuestion);
         Intent srcIntent = getIntent();
         int diff = srcIntent.getIntExtra("difficulty",0);
         difficulty = diff;
         Button playButton = findViewById(R.id.playButton);
-
+        getAllQuestion(myArrayNoob);
+        getAllQuestion(myArrayEz);
+        getAllQuestion(myArrayFan);
 
 
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // playSong();
-
             }
         });
-        //String temp[][] = myArray;
-        //Arrays.sort(temp);
         choseDiff(diff);
         reset();
+
+    }
+
+    private void getAllQuestion(String[][] array){
+        for(int i =0 ; i < array.length; i++){
+            allMyQuestions.add(array[i][0]);
+        }
 
     }
 
