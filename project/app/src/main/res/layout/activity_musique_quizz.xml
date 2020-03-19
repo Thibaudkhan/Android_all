@@ -6,11 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".MusiqueQuizz">
 
+    <TextView
+        android:id="@+id/nbQuestionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintEnd_toStartOf="@+id/playButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/playButton" />
+
     <ImageView
         android:id="@+id/questionImageView"
         android:layout_width="0dp"
         android:layout_height="100dp"
-        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/download"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="32dp" />
