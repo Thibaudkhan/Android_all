@@ -3,6 +3,7 @@ package com.convert.thibaud.music;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MusiqueQuizz extends AppCompatActivity {
     private RadioGroup radio_group;
@@ -39,6 +42,10 @@ public class MusiqueQuizz extends AppCompatActivity {
     int nbTotQuestion = arrayInt.length;
     int difficulty = 0;
     Quizz quizz;
+    Timer time;
+    RadioButton rightAnswear;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,12 +57,15 @@ public class MusiqueQuizz extends AppCompatActivity {
         myArrayFan = quizz.myArrayFan2;
         nbQuestionTextView.setText(nbQuestion + " / "+ nbTotQuestion);
         Intent srcIntent = getIntent();
+
+
         int diff = srcIntent.getIntExtra("difficulty",0);
         difficulty = diff;
         Button playButton = findViewById(R.id.playButton);
         getAllQuestion(myArrayNoob);
         getAllQuestion(myArrayEz);
         getAllQuestion(myArrayFan);
+        time = new Timer();
 
 
         playButton.setOnClickListener(new View.OnClickListener() {
@@ -129,6 +139,15 @@ public class MusiqueQuizz extends AppCompatActivity {
         radio_button2.setText(""+ tempArr.get(1));
         radio_button3.setText(""+ tempArr.get(2));
         radio_button4.setText(""+ tempArr.get(3));
+        if(radio_button1.getText().equals(myArray[a][2])){
+            rightAnswear = radio_button1;
+        }else if(radio_button2.getText().equals(myArray[a][2])){
+            rightAnswear = radio_button2;
+        }else if(radio_button3.getText().equals(myArray[a][2])){
+            rightAnswear = radio_button3;
+        }else{
+            rightAnswear = radio_button4;
+        }
         playSong();
 
 
@@ -150,9 +169,31 @@ public class MusiqueQuizz extends AppCompatActivity {
                 Log.i("Quizz","nice "+myArray[random][2] + "  // "+radioButton.getText());
                 if(radioButton.getText().toString().equals(myArray[random][2])){
                     goodAnswear++;
-                    Log.i("Quizz","okkkk");
+                    reset();
+                    //radioButton.setBackgroundColor(Color.GREEN);
+                    //Toast.makeText(ImageQuizz.this,"Bravo !! ",Toast.LENGTH_SHORT).show();
+                }else{
+
+                    rightAnswear.setBackgroundColor(Color.GREEN);
+                    submitButton.setEnabled(false);
+                    time.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    rightAnswear.setBackgroundColor(Color.WHITE);
+                                    submitButton.setEnabled(true);
+                                    reset();
+
+                                }
+                            });
+
+                        }
+                    },3000);
+
                 }
-                reset();
 
             }
         });

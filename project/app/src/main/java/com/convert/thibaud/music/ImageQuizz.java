@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.TypedArrayUtils;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +37,7 @@ public class ImageQuizz extends AppCompatActivity {
     int nbQuestion = 0;
     int goodAnswear = 0;
     int difficulties = 0;
+    RadioButton rightAnswear;
     private boolean firstTime = true;
     List<List<String>> myList = new ArrayList<List<String>>();
     List<String> allMyQuestions = new ArrayList<String>();
@@ -47,6 +49,7 @@ public class ImageQuizz extends AppCompatActivity {
     int[] arrayInt = {R.drawable.chris,R.drawable.dominic,R.drawable.matt};
     int nbTotQuestion = arrayInt.length;
     int difficulty = 0;
+    Timer time;
 
 
     @Override
@@ -67,6 +70,7 @@ public class ImageQuizz extends AppCompatActivity {
         getAllQuestion(myArrayFan);
         choseDiff(diff);
         reset();
+        time = new Timer();
         //String temp[][] = myArray;
         //Arrays.sort(temp);
 
@@ -102,6 +106,16 @@ public class ImageQuizz extends AppCompatActivity {
         radio_button3.setText(""+ tempArr.get(2));
         radio_button4.setText(""+ tempArr.get(3));
         tempArr.remove(a);
+        if(radio_button1.getText().equals(myArray[a][2])){
+            rightAnswear = radio_button1;
+        }else if(radio_button2.getText().equals(myArray[a][2])){
+            rightAnswear = radio_button2;
+        }else if(radio_button3.getText().equals(myArray[a][2])){
+            rightAnswear = radio_button3;
+        }else{
+            rightAnswear = radio_button4;
+        }
+
 
     }
 
@@ -111,8 +125,7 @@ public class ImageQuizz extends AppCompatActivity {
         final RadioGroup radio_group = findViewById(R.id.radio_group);
         final int random = a;
         questionTextView.setText(myArray[a][0]+" ");
-
-        submitButton.setOnClickListener(new View.OnClickListener() {
+            submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 firstTime = false;
@@ -121,15 +134,39 @@ public class ImageQuizz extends AppCompatActivity {
                 Log.i("Quizz","nice "+myArray[random][2] + "  // "+radioButton.getText());
                 if(radioButton.getText().toString().equals(myArray[random][2])){
                     goodAnswear++;
+                    reset();
+                    //radioButton.setBackgroundColor(Color.GREEN);
                     //Toast.makeText(ImageQuizz.this,"Bravo !! ",Toast.LENGTH_SHORT).show();
+                }else{
+
+                    rightAnswear.setBackgroundColor(Color.GREEN);
+                    submitButton.setEnabled(false);
+                    time.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    rightAnswear.setBackgroundColor(Color.WHITE);
+                                    submitButton.setEnabled(true);
+                                    reset();
+
+                                }
+                            });
+
+                        }
+                    },3000);
+
                 }
-                reset();
+                //reset();
 
 
 
             }
         });
     }
+
 
 
     private void getAllQuestion(String[][] array){
