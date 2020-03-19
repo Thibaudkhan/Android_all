@@ -85,12 +85,11 @@ public class ImageQuizz extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                firstTime = false;
                 int id = radio_group.getCheckedRadioButtonId();
                 radioButton = (RadioButton) findViewById(id);
                 Log.i("Quizz","nice "+myArray[random][2] + "  // "+radioButton.getText());
                 if(radioButton.getText().toString().equals(myArray[random][2])){
-                    firstTime = false;
                     goodAnswear++;
                     //Toast.makeText(ImageQuizz.this,"Bravo !! ",Toast.LENGTH_SHORT).show();
                 }
