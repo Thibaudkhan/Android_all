@@ -19,9 +19,10 @@ public class Score extends AppCompatActivity {
         TextView diffTextView = findViewById(R.id.diffTextView);
         Intent srcIntent = getIntent();
         int nbAnswear = srcIntent.getIntExtra("goodAnswear",0);
+        int diff = srcIntent.getIntExtra("difficulty",0);
         int lengthArr = srcIntent.getIntExtra("length",1);
         answearTextView.setText(nbAnswear+" / "+ lengthArr );
-        diffTextView.setText("EZ");
+        diffTextView.setText("Difficulty level : "+ diff);
         totalTextView.setText((nbAnswear*100/lengthArr*100)/100 + " %" );
 
     }

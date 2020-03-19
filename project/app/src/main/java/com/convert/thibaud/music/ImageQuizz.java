@@ -32,12 +32,16 @@ public class ImageQuizz extends AppCompatActivity {
     int random = 0;
     int nbQuestion = 0;
     int goodAnswear = 0;
-
+    int difficulties = 0;
     private boolean firstTime = true;
     List<List<String>> myList = new ArrayList<List<String>>();
-    String[][] myArray = {{"Qui est sur la photo","Matthew Bellamy","Christopher Wolstenholme","Dominic Howard","Christopher Howard"},{"Qui est sur la photo","Matthew Bellamy","Dominic Howard","Christopher Wolstenholme","Christopher Howard"},{"Qui est sur la photo","Christopher Wolstenholme","Matthew Bellamy","Dominic Howard","Christopher Howard"}};
+    String[][] myArray;
+    String[][] myArrayNoob = {{"Qui est sur la photo","Matthew Bellamy","Christopher Wolstenholme","Dominic Howard","Christopher Howard"},{"Qui est sur la photo","Matthew Bellamy","Dominic Howard","Christopher Wolstenholme","Christopher Howard"},{"Qui est sur la photo","Christopher Wolstenholme","Matthew Bellamy","Dominic Howard","Christopher Howard"}};
+    String[][] myArrayEz = {{"Qui est sur la photo","Matthew Bellamy","Christopher Wolstenholme","Dominic Howard","Christopher Howard"},{"Qui est sur la photo","Matthew Bellamy","Dominic Howard","Christopher Wolstenholme","Christopher Howard"},{"Qui est sur la photo","Christopher Wolstenholme","Matthew Bellamy","Dominic Howard","Christopher Howard"}};
+    String[][] myArrayFan = {{"Qui est sur la photo","Christopher Wolstenholmes","Christopher Wolstenholme","Christophers Wolstenholme","Christopher Wolstehnolme"},{"Qui est sur la photo","Dominique Howard","Dominic Howard","Dominic Clurk","Dominic Clark"},{"Qui est sur la photo","Matt Bellamy","Matthew Bellamy","Mathew Bellamy","Matthew Bellamie"}};
     int[] arrayInt = {R.drawable.chris,R.drawable.dominic,R.drawable.matt};
     int nbTotQuestion = arrayInt.length;
+    int difficulty = 0;
 
 
     @Override
@@ -46,12 +50,26 @@ public class ImageQuizz extends AppCompatActivity {
         setContentView(R.layout.activity_image_quizz);
         TextView nbQuestionTextView = findViewById(R.id.nbQuestionTextView);
         nbQuestionTextView.setText(nbQuestion + " / "+ nbTotQuestion);
-
+        Intent srcIntent = getIntent();
+        int diff = srcIntent.getIntExtra("difficulty",0);
+        difficulty = diff;
+        choseDiff(diff);
         reset();
         //String temp[][] = myArray;
         //Arrays.sort(temp);
 
 
+    }
+
+    private String[][] choseDiff(int difficulties){
+        if(difficulties == 0){
+            myArray = myArrayNoob;
+        }else if (difficulties == 1){
+            myArray = myArrayEz;
+        }else{
+            myArray = myArrayFan;
+        }
+        return myArray;
     }
 
     private void initQuizz(int a){
@@ -117,6 +135,7 @@ public class ImageQuizz extends AppCompatActivity {
             if(myArray.length < 1){
             Log.i("Quizz","okkkk");
             Intent intent = new Intent(ImageQuizz.this, Score.class);
+                intent.putExtra("difficulty",difficulty);
                 intent.putExtra("goodAnswear", goodAnswear);
                 intent.putExtra("length", nbTotQuestion);
 
