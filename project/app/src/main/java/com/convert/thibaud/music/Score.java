@@ -22,7 +22,7 @@ public class Score extends AppCompatActivity {
         int lengthArr = srcIntent.getIntExtra("length",1);
         answearTextView.setText(nbAnswear+" / "+ lengthArr );
         diffTextView.setText("EZ");
-        totalTextView.setText((nbAnswear/lengthArr)*100 + " %" );
+        totalTextView.setText((nbAnswear*100/lengthArr*100)/100 + " %" );
 
     }
 }
