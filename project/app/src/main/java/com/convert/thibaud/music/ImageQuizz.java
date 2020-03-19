@@ -15,6 +15,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.chrisbanes.photoview.PhotoView;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Random;
@@ -79,7 +81,7 @@ public class ImageQuizz extends AppCompatActivity {
         tempArr.add(myArray[a][3]);
         tempArr.add(myArray[a][4]);
         Collections.shuffle(tempArr);
-        ImageView questionImageView = findViewById(R.id.questionImageView);
+        PhotoView questionImageView = findViewById(R.id.questionImageView);
         RadioButton radio_button1 = findViewById(R.id.radio_button1);
         RadioButton radio_button2 = findViewById(R.id.radio_button2);
         RadioButton radio_button3 = findViewById(R.id.radio_button3);

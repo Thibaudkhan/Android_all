@@ -54,19 +54,43 @@ public class MusiqueQuizz extends AppCompatActivity {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mediaPlayer == null){
-                    mediaPlayer = MediaPlayer.create(MusiqueQuizz.this,arrayInt[random]);
-                    mediaPlayer.start();
-                }
+               // playSong();
+
             }
         });
         //String temp[][] = myArray;
         //Arrays.sort(temp);
         choseDiff(diff);
         reset();
-        mediaPlayer = MediaPlayer.create(MusiqueQuizz.this,arrayInt[random]);
-        mediaPlayer.start();
 
+    }
+
+    private void playSong(){
+        stopSong();
+        if(mediaPlayer == null){
+            Log.i("music","ok "+ arrayInt[random]);
+            mediaPlayer = MediaPlayer.create(MusiqueQuizz.this,arrayInt[random]);
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    stopSong();
+                }
+            });
+        }
+        mediaPlayer.start();
+    }
+
+    private void stopSong(){
+        if(mediaPlayer != null){
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stopSong();
     }
 
     private String[][] choseDiff(int difficulties){
@@ -95,6 +119,8 @@ public class MusiqueQuizz extends AppCompatActivity {
         radio_button2.setText(""+ tempArr.get(1));
         radio_button3.setText(""+ tempArr.get(2));
         radio_button4.setText(""+ tempArr.get(3));
+        playSong();
+
 
     }
 
@@ -103,13 +129,12 @@ public class MusiqueQuizz extends AppCompatActivity {
         Button submitButton = findViewById(R.id.submitButton);
         final RadioGroup radio_group = findViewById(R.id.radio_group);
         final int random = a;
-        questionTextView.setText(myArray[1][0]+" ");
+        questionTextView.setText(myArray[a][0]+" ");
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 firstTime = false;
-
                 int id = radio_group.getCheckedRadioButtonId();
                 radioButton = (RadioButton) findViewById(id);
                 Log.i("Quizz","nice "+myArray[random][2] + "  // "+radioButton.getText());
