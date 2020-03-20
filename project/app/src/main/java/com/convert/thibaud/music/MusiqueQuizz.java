@@ -38,8 +38,8 @@ public class MusiqueQuizz extends AppCompatActivity {
     String[][] myArrayEz;
     String[][] myArrayFan;
     int[] arrayInt = {1};
-    int[] arrayIntNoob = {R.raw.showbiz,R.raw.algorithm,R.raw.plug};
-    int[] arrayIntEz = {R.raw.showbiz,R.raw.algorithm,R.raw.plug};
+    int[] arrayIntNoob = {R.raw.mercibis,R.raw.mercibis,R.raw.isolatedsystem};
+    int[] arrayIntEz = {R.raw.mercy,R.raw.algorithm,R.raw.plug};
     int[] arrayIntFan = {R.raw.showbiz,R.raw.algorithm,R.raw.plug};
     int nbTotQuestion = arrayInt.length;
     int difficulty = 0;
