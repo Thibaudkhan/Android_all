@@ -39,6 +39,7 @@ public class DifficultyQuizz extends AppCompatActivity {
         });
     }
 
+    // -- Redirect to the good quizz
     public void difficultyChosed(int diff,int level){
         if(level == 0){
             Intent intent = new Intent(DifficultyQuizz.this, MusiqueQuizz.class);

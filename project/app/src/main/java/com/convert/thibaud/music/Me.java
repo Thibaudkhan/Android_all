@@ -13,6 +13,6 @@ public class Me extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_me);
         TextView nbVersionTextView = findViewById(R.id.nbVersionTextView);
-        nbVersionTextView.setText( BuildConfig.VERSION_NAME + " ");
+        nbVersionTextView.setText( "vesion "+BuildConfig.VERSION_NAME );
     }
 }

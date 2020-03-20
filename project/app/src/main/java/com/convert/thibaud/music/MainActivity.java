@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         playButton.setOnClickListener(new View.OnClickListener() {
+            // -- redirect to Selected Menu
             @Override
             public void onClick(View v) {
                Intent intent = new Intent(MainActivity.this, SelectedMenu.class);

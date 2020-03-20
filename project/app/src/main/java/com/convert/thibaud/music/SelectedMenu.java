@@ -24,8 +24,6 @@ public class SelectedMenu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SelectedMenu.this, DifficultyQuizz.class);
-                Intent srcIntent = getIntent();
-                int diff = srcIntent.getIntExtra("level",0);
                 intent.putExtra("level",0);
                 startActivity(intent);
             }
@@ -34,8 +32,6 @@ public class SelectedMenu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SelectedMenu.this, DifficultyQuizz.class);
-                Intent srcIntent = getIntent();
-                int diff = srcIntent.getIntExtra("level",0);
                 intent.putExtra("level",1);
                 startActivity(intent);
             }

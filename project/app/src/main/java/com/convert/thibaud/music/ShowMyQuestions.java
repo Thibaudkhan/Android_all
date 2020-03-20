@@ -23,11 +23,7 @@ public class ShowMyQuestions extends AppCompatActivity {
         quizz = new Quizz();
         allMyQuestions = quizz.onCreate();
         test = allMyQuestions.toArray(new String[allMyQuestions.size()]);
-        for(int i = 0 ; i < test.length; i++){
-            Log.i("List",test[i]);
-        }
         adapter = new QuestionItem(test);
-
 
         Log.i("List", String.valueOf(allMyQuestions));
         RecyclerView recyclerView = findViewById(R.id.recyclerView);

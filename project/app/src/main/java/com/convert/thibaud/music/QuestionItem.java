@@ -14,7 +14,7 @@ public class QuestionItem extends RecyclerView.Adapter<QuestionItem.ViewHolder> 
 
     private List<String> question;
     String[] test ;
-
+    // -- construct...
     public QuestionItem(String[] test) {
         this.test = test;
     }
@@ -29,8 +29,6 @@ public class QuestionItem extends RecyclerView.Adapter<QuestionItem.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.ask.setText(test[position]);
-
-
     }
 
     @Override

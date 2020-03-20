@@ -36,17 +36,16 @@ public class ImageQuizz extends AppCompatActivity {
     int random = 0;
     int nbQuestion = 0;
     int goodAnswear = 0;
-    int difficulties = 0;
     RadioButton rightAnswear;
     private boolean firstTime = true;
-    List<List<String>> myList = new ArrayList<List<String>>();
-    List<String> allMyQuestions = new ArrayList<String>();
-
     String[][] myArray;
     String[][] myArrayNoob;
     String[][] myArrayEz;
     String[][] myArrayFan;
-    int[] arrayInt = {R.drawable.chris,R.drawable.dominic,R.drawable.matt};
+    int[] arrayInt = {1};
+    int[] arrayIntNoob = {R.drawable.chris,R.drawable.dominic,R.drawable.matt};
+    int[] arrayIntEz = {R.drawable.chris,R.drawable.dominic,R.drawable.matt};
+    int[] arrayIntFan = {R.drawable.chris,R.drawable.dominic,R.drawable.matt};
     int nbTotQuestion = arrayInt.length;
     int difficulty = 0;
     Timer time;
@@ -60,7 +59,6 @@ public class ImageQuizz extends AppCompatActivity {
         myArrayNoob = quizz.myArrayNoob;
         myArrayEz = quizz.myArrayEz;
         myArrayFan = quizz.myArrayFan;
-        nbQuestionTextView.setText(nbQuestion + " / "+ nbTotQuestion);
         Intent srcIntent = getIntent();
         int diff = srcIntent.getIntExtra("difficulty",0);
         difficulty = diff;
@@ -68,23 +66,33 @@ public class ImageQuizz extends AppCompatActivity {
         quizz.getAllQuestion(myArrayEz);
         quizz.getAllQuestion(myArrayFan);
         choseDiff(diff);
+        nbTotQuestion = arrayInt.length;
+        nbQuestionTextView.setText(nbQuestion + " / "+ nbTotQuestion);
         reset();
         time = new Timer();
     }
+
+    // -- Depending of the difficulty return the good array ( 1 array for difficulty)
     private String[][] choseDiff(int difficulties){
         if(difficulties == 0){
             myArray = myArrayNoob;
+            arrayInt = arrayIntNoob;
         }else if (difficulties == 1){
             myArray = myArrayEz;
+            arrayInt = arrayIntEz;
         }else{
             myArray = myArrayFan;
+            arrayInt = arrayIntFan;
         }
         return myArray;
     }
+
+    // -- Return the right answer depending of the value of the radio
     public boolean getRightAnswear(RadioButton radio_button,int a){
         return radio_button.getText().equals(myArray[a][2]);
     }
 
+    // -2- Show all the text, image, music and give the right radio_button. Take in argument random int
     private void initQuizz(int a){
         ArrayList<String> tempArr = new ArrayList<String>();
         tempArr.add(myArray[a][1]);
@@ -110,7 +118,7 @@ public class ImageQuizz extends AppCompatActivity {
     }
 
 
-
+    // -3- Check if the radio_button selected are right and if not show the right answer.
     public void selected(int a ){
         TextView questionTextView = findViewById(R.id.questionTextView);
         Button submitButton = findViewById(R.id.submitButton);
@@ -127,7 +135,8 @@ public class ImageQuizz extends AppCompatActivity {
                 if(radioButton.getText().toString().equals(myArray[random][2])){
                     goodAnswear++;
                     reset();
-                }else{
+                }// - Show the right answer during 3 seconds and call reset method.
+                else{
 
                     rightAnswear.setBackgroundColor(Color.GREEN);
                     submitButton.setEnabled(false);
@@ -149,8 +158,8 @@ public class ImageQuizz extends AppCompatActivity {
         });
     }
 
+    // -1- unset previous value of the arrays, define the random value, send values to Score and call other principal method
     private void reset(){
-
             Random rand = new Random();
             if (!firstTime) {
                 myArray = quizz.remeoveStringOccurence(myArray, random);
@@ -160,13 +169,7 @@ public class ImageQuizz extends AppCompatActivity {
                 nbQuestionTextView.setText(nbQuestion + " / " + nbTotQuestion);
             }
             if(myArray.length < 1){
-            Log.i("Quizz","okkkk");
-            Intent intent = new Intent(ImageQuizz.this, Score.class);
-                intent.putExtra("difficulty",difficulty);
-                intent.putExtra("goodAnswear", goodAnswear);
-                intent.putExtra("length", nbTotQuestion);
-
-            startActivity(intent);
+                emptyArray();
             }else {
                 random = rand.nextInt(myArray.length);
                 Log.i("Quizz", "test " + myArray[random][2] + " random " + random);
@@ -174,7 +177,13 @@ public class ImageQuizz extends AppCompatActivity {
                 selected(random);
             }
     }
-
-
-
+    // -- Send the score to Score class
+    public void emptyArray(){
+        Log.i("Quizz", "okkkk");
+        Intent intent = new Intent(ImageQuizz.this, Score.class);
+        intent.putExtra("difficulty", difficulty);
+        intent.putExtra("goodAnswear", goodAnswear);
+        intent.putExtra("length", nbTotQuestion);
+        startActivity(intent);
+    }
 }

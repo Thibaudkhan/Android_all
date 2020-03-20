@@ -37,13 +37,16 @@ public class MusiqueQuizz extends AppCompatActivity {
     String[][] myArrayNoob;
     String[][] myArrayEz;
     String[][] myArrayFan;
-    List<String> allMyQuestions = new ArrayList<String>();
-    int[] arrayInt = {R.raw.showbiz,R.raw.algorithm,R.raw.plug};
+    int[] arrayInt = {1};
+    int[] arrayIntNoob = {R.raw.showbiz,R.raw.algorithm,R.raw.plug};
+    int[] arrayIntEz = {R.raw.showbiz,R.raw.algorithm,R.raw.plug};
+    int[] arrayIntFan = {R.raw.showbiz,R.raw.algorithm,R.raw.plug};
     int nbTotQuestion = arrayInt.length;
     int difficulty = 0;
     Quizz quizz;
     Timer time;
     RadioButton rightAnswear;
+
 
 
     @Override
@@ -52,10 +55,9 @@ public class MusiqueQuizz extends AppCompatActivity {
         setContentView(R.layout.activity_musique_quizz);
         TextView nbQuestionTextView = findViewById(R.id.nbQuestionTextView);
         quizz = new Quizz();
-        myArrayNoob = quizz.myArrayNoob2;
-        myArrayEz = quizz.myArrayEz2;
-        myArrayFan = quizz.myArrayFan2;
-        nbQuestionTextView.setText(nbQuestion + " / "+ nbTotQuestion);
+        myArrayNoob = quizz.myArrayNoobMusic;
+        myArrayEz = quizz.myArrayEzMusic;
+        myArrayFan = quizz.myArrayFanMusic;
         Intent srcIntent = getIntent();
 
         int diff = srcIntent.getIntExtra("difficulty",0);
@@ -66,21 +68,20 @@ public class MusiqueQuizz extends AppCompatActivity {
         quizz.getAllQuestion(myArrayFan);
         time = new Timer();
 
+        // -- Restart music when press button replay ( call method play song)
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                playSong();
             }
         });
         choseDiff(diff);
+        nbTotQuestion = arrayInt.length;
+        nbQuestionTextView.setText(nbQuestion + " / "+ nbTotQuestion);
         reset();
     }
 
-    private void getAllQuestion(String[][] array){
-        for(int i =0 ; i < array.length; i++){
-            allMyQuestions.add(array[i][0]);
-        }
-    }
-
+    // -- Start music first stop song and next to chose the music depend of the random
     private void playSong(){
         stopSong();
         if(mediaPlayer == null){
@@ -96,6 +97,7 @@ public class MusiqueQuizz extends AppCompatActivity {
         mediaPlayer.start();
     }
 
+    //  -- Stop the music and define mediaPLayer to null
     private void stopSong(){
         if(mediaPlayer != null){
             mediaPlayer.release();
@@ -109,26 +111,32 @@ public class MusiqueQuizz extends AppCompatActivity {
         stopSong();
     }
 
+    // -- Depending of the difficulty return the good array ( 1 array for difficulty)
     private String[][] choseDiff(int difficulties){
         if(difficulties == 0){
             myArray = myArrayNoob;
+            arrayInt = arrayIntNoob;
         }else if (difficulties == 1){
             myArray = myArrayEz;
+            arrayInt = arrayIntEz;
         }else{
+            arrayInt = arrayIntFan;
             myArray = myArrayFan;
         }
         return myArray;
     }
+    // -- Return the right answer depending of the value of the radio
     public boolean getRightAnswear(RadioButton radio_button,int a){
         return radio_button.getText().equals(myArray[a][2]);
     }
 
-    private void initQuizz(int a){
+    // -2- Show all the text, image, music and give the right radio_button. Take in argument random int
+    private void initQuizz(int rand){
         ArrayList<String> tempArr = new ArrayList<String>();
-        tempArr.add(myArray[a][1]);
-        tempArr.add(myArray[a][2]);
-        tempArr.add(myArray[a][3]);
-        tempArr.add(myArray[a][4]);
+        tempArr.add(myArray[rand][1]);
+        tempArr.add(myArray[rand][2]);
+        tempArr.add(myArray[rand][3]);
+        tempArr.add(myArray[rand][4]);
         Collections.shuffle(tempArr);
         RadioButton radio_button1 = findViewById(R.id.radio_button1);
         RadioButton radio_button2 = findViewById(R.id.radio_button2);
@@ -139,21 +147,22 @@ public class MusiqueQuizz extends AppCompatActivity {
         radio_button3.setText(""+ tempArr.get(2));
         radio_button4.setText(""+ tempArr.get(3));
 
-        rightAnswear = (getRightAnswear(radio_button1,a))? radio_button1
-                : getRightAnswear(radio_button2,a)? radio_button2
-                : getRightAnswear(radio_button3,a)? radio_button3
+        rightAnswear = (getRightAnswear(radio_button1,rand))? radio_button1
+                : getRightAnswear(radio_button2,rand)? radio_button2
+                : getRightAnswear(radio_button3,rand)? radio_button3
                 : radio_button4;
         playSong();
 
 
     }
 
-    public void selected(int a ){
+    // -3- Check if the radio_button selected are right and if not show the right answer.
+    public void selected(int rand ){
         TextView questionTextView = findViewById(R.id.questionTextView);
         Button submitButton = findViewById(R.id.submitButton);
         final RadioGroup radio_group = findViewById(R.id.radio_group);
-        final int random = a;
-        questionTextView.setText(myArray[a][0]+" ");
+        final int random = rand;
+        questionTextView.setText(myArray[rand][0]+" ");
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,7 +174,9 @@ public class MusiqueQuizz extends AppCompatActivity {
                 if(radioButton.getText().toString().equals(myArray[random][2])){
                     goodAnswear++;
                     reset();
-                }else{
+                }// - Show the right answer during 3 seconds and call reset method.
+                else
+                    {
 
                     rightAnswear.setBackgroundColor(Color.GREEN);
                     submitButton.setEnabled(false);
@@ -187,6 +198,7 @@ public class MusiqueQuizz extends AppCompatActivity {
         });
     }
 
+    // -1- unset previous value of the arrays, define the random value, send values to Score and call other principal method
     private void reset(){
         Random rand = new Random();
         if (!firstTime) {
@@ -198,18 +210,22 @@ public class MusiqueQuizz extends AppCompatActivity {
 
         }
         if(myArray.length < 1){
-            Log.i("Quizz","okkkk");
-            Intent intent = new Intent(MusiqueQuizz.this, Score.class);
-            intent.putExtra("difficulty",difficulty);
-            intent.putExtra("goodAnswear", goodAnswear);
-            intent.putExtra("length", nbTotQuestion);
-            startActivity(intent);
+            emptyArray();
         }else {
             random = rand.nextInt(myArray.length);
             Log.i("Quizz", "test " + myArray[random][2] + " random " + random);
             initQuizz(random);
             selected(random);
         }
+    }
+    // -- Send the score to Score class
+    public void emptyArray(){
+            Log.i("Quizz", "okkkk");
+            Intent intent = new Intent(MusiqueQuizz.this, Score.class);
+            intent.putExtra("difficulty", difficulty);
+            intent.putExtra("goodAnswear", goodAnswear);
+            intent.putExtra("length", nbTotQuestion);
+            startActivity(intent);
     }
 
 }
