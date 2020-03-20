@@ -12,7 +12,6 @@ public class Me extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_me);
-        //String versionName = BuildConfig.VERSION_NAME;
         TextView nbVersionTextView = findViewById(R.id.nbVersionTextView);
         nbVersionTextView.setText( BuildConfig.VERSION_NAME + " ");
     }

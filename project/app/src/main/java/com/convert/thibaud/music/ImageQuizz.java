@@ -51,7 +51,6 @@ public class ImageQuizz extends AppCompatActivity {
     int difficulty = 0;
     Timer time;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,18 +64,13 @@ public class ImageQuizz extends AppCompatActivity {
         Intent srcIntent = getIntent();
         int diff = srcIntent.getIntExtra("difficulty",0);
         difficulty = diff;
-        getAllQuestion(myArrayNoob);
-        getAllQuestion(myArrayEz);
-        getAllQuestion(myArrayFan);
+        quizz.getAllQuestion(myArrayNoob);
+        quizz.getAllQuestion(myArrayEz);
+        quizz.getAllQuestion(myArrayFan);
         choseDiff(diff);
         reset();
         time = new Timer();
-        //String temp[][] = myArray;
-        //Arrays.sort(temp);
-
-
     }
-
     private String[][] choseDiff(int difficulties){
         if(difficulties == 0){
             myArray = myArrayNoob;
@@ -86,6 +80,9 @@ public class ImageQuizz extends AppCompatActivity {
             myArray = myArrayFan;
         }
         return myArray;
+    }
+    public boolean getRightAnswear(RadioButton radio_button,int a){
+        return radio_button.getText().equals(myArray[a][2]);
     }
 
     private void initQuizz(int a){
@@ -100,24 +97,19 @@ public class ImageQuizz extends AppCompatActivity {
         RadioButton radio_button2 = findViewById(R.id.radio_button2);
         RadioButton radio_button3 = findViewById(R.id.radio_button3);
         RadioButton radio_button4 = findViewById(R.id.radio_button4);
-        questionImageView.setImageResource(arrayInt[a]);
         radio_button1.setText(""+ tempArr.get(0));
         radio_button2.setText(""+ tempArr.get(1));
         radio_button3.setText(""+ tempArr.get(2));
         radio_button4.setText(""+ tempArr.get(3));
-        tempArr.remove(a);
-        if(radio_button1.getText().equals(myArray[a][2])){
-            rightAnswear = radio_button1;
-        }else if(radio_button2.getText().equals(myArray[a][2])){
-            rightAnswear = radio_button2;
-        }else if(radio_button3.getText().equals(myArray[a][2])){
-            rightAnswear = radio_button3;
-        }else{
-            rightAnswear = radio_button4;
-        }
 
-
+        rightAnswear = (getRightAnswear(radio_button1,a))? radio_button1
+                : getRightAnswear(radio_button2,a)? radio_button2
+                : getRightAnswear(radio_button3,a)? radio_button3
+                : radio_button4;
+        questionImageView.setImageResource(arrayInt[a]);
     }
+
+
 
     public void selected(int a ){
         TextView questionTextView = findViewById(R.id.questionTextView);
@@ -135,8 +127,6 @@ public class ImageQuizz extends AppCompatActivity {
                 if(radioButton.getText().toString().equals(myArray[random][2])){
                     goodAnswear++;
                     reset();
-                    //radioButton.setBackgroundColor(Color.GREEN);
-                    //Toast.makeText(ImageQuizz.this,"Bravo !! ",Toast.LENGTH_SHORT).show();
                 }else{
 
                     rightAnswear.setBackgroundColor(Color.GREEN);
@@ -145,47 +135,29 @@ public class ImageQuizz extends AppCompatActivity {
                         @Override
                         public void run() {
                             runOnUiThread(new Runnable() {
-
                                 @Override
                                 public void run() {
                                     rightAnswear.setBackgroundColor(Color.WHITE);
                                     submitButton.setEnabled(true);
                                     reset();
-
                                 }
                             });
-
                         }
                     },3000);
-
                 }
-                //reset();
-
-
-
             }
         });
-    }
-
-
-
-    private void getAllQuestion(String[][] array){
-        for(int i =0 ; i < array.length; i++){
-            allMyQuestions.add(array[i][0]);
-        }
-
     }
 
     private void reset(){
 
             Random rand = new Random();
             if (!firstTime) {
-                myArray = remeoveStringOccurence(myArray, random);
-                arrayInt = remeoveIntOccurence(arrayInt, random);
+                myArray = quizz.remeoveStringOccurence(myArray, random);
+                arrayInt = quizz.remeoveIntOccurence(arrayInt, random);
                 nbQuestion++;
                 TextView nbQuestionTextView = findViewById(R.id.nbQuestionTextView);
                 nbQuestionTextView.setText(nbQuestion + " / " + nbTotQuestion);
-
             }
             if(myArray.length < 1){
             Log.i("Quizz","okkkk");
@@ -197,21 +169,12 @@ public class ImageQuizz extends AppCompatActivity {
             startActivity(intent);
             }else {
                 random = rand.nextInt(myArray.length);
-
-
                 Log.i("Quizz", "test " + myArray[random][2] + " random " + random);
-                //remove(myArray,random);
-
                 initQuizz(random);
                 selected(random);
             }
     }
 
-    public String[][]remeoveStringOccurence(String[][] array,int nb){
-        return ArrayUtils.remove(array,nb);
-    }
-    public int[] remeoveIntOccurence(int[] array,int nb){
-        return ArrayUtils.remove(array,nb);
-    }
+
 
 }

@@ -12,7 +12,6 @@ import java.util.List;
 
 public class ShowMyQuestions extends AppCompatActivity {
 
-    private List<String> question;
     private QuestionItem adapter;
     private Quizz quizz;
     private List<String> allMyQuestions;

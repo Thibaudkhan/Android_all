@@ -28,7 +28,6 @@ public class QuestionItem extends RecyclerView.Adapter<QuestionItem.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        //String questions = question.get(position);
         holder.ask.setText(test[position]);
 
 
@@ -36,7 +35,6 @@ public class QuestionItem extends RecyclerView.Adapter<QuestionItem.ViewHolder> 
 
     @Override
     public int getItemCount() {
-
         return test.length;
     }
 
