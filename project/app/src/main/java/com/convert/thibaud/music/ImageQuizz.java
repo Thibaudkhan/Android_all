@@ -43,9 +43,9 @@ public class ImageQuizz extends AppCompatActivity {
     String[][] myArrayEz;
     String[][] myArrayFan;
     int[] arrayInt = {1};
-    int[] arrayIntNoob = {R.drawable.chris,R.drawable.dominic,R.drawable.matt};
-    int[] arrayIntEz = {R.drawable.chris,R.drawable.dominic,R.drawable.matt};
-    int[] arrayIntFan = {R.drawable.chris,R.drawable.dominic,R.drawable.matt};
+    int[] arrayIntNoob = {R.drawable.chris,R.drawable.showbiz,R.drawable.matt};
+    int[] arrayIntEz = {R.drawable.drones,R.drawable.originofsymetry,R.drawable.matt};
+    int[] arrayIntFan = {R.drawable.muse_bgc,R.drawable.pluginbaby,R.drawable.matt};
     int nbTotQuestion = arrayInt.length;
     int difficulty = 0;
     Timer time;
